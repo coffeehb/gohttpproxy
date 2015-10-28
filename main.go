@@ -1,17 +1,21 @@
 package main
 
 import (
-	"flag"
 	"github.com/elazarl/goproxy"
 	"log"
+	"net"
 	"net/http"
 )
 
 func main() {
-	verbose := true
-	addr := "127.0.0.1:8123"
-	flag.Parse()
 	proxy := goproxy.NewProxyHttpServer()
-	proxy.Verbose = verbose
-	log.Fatal(http.ListenAndServe(addr, proxy))
+	proxy.Tr.Dial = func(network, addr string) (c net.Conn, err error) {
+		c, err = net.Dial(network, addr)
+		if c, ok := c.(*net.TCPConn); err != nil && ok {
+			c.SetKeepAlive(true)
+		}
+		return
+	}
+	proxy.Verbose = true
+	log.Fatal(http.ListenAndServe("127.0.0.1:8123", proxy))
 }
