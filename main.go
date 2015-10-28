@@ -15,6 +15,7 @@ func main() {
 		if c, ok := c.(*net.TCPConn); err == nil && ok {
 			log.Println("Set keep alive")
 			c.SetKeepAlive(true)
+			c.SetNoDelay(true)
 		}
 		return
 	}
