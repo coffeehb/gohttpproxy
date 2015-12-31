@@ -21,6 +21,8 @@ func main() {
 			c.SetKeepAlive(true)
 			c.SetNoDelay(true)
 			c.SetDeadline(time.Now().Add(30 * time.Second))
+			c.SetWriteBuffer(512 * 1024)
+			c.SetReadBuffer(512 * 1024)
 		}
 		return
 	}
