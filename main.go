@@ -13,7 +13,7 @@ func main() {
 	proxy := goproxy.NewProxyHttpServer()
 	proxy.Tr.Dial = func(network, addr string) (c net.Conn, err error) {
 		c, err = (&net.Dialer{
-			Timeout:   30 * time.Second,
+			Timeout:   3 * time.Second,
 			KeepAlive: 10 * time.Second,
 		}).Dial(network, addr)
 		if c, ok := c.(*net.TCPConn); err == nil && ok {
