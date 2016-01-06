@@ -21,7 +21,6 @@ func main() {
 			log.Println("Set keep alive")
 			c.SetKeepAlive(true)
 			c.SetNoDelay(true)
-			c.SetDeadline(time.Now().Add(to))
 		}
 		return
 	}
