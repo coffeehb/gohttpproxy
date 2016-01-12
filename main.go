@@ -11,10 +11,11 @@ import (
 func main() {
 	log.Print("Start proxy")
 	proxy := goproxy.NewProxyHttpServer()
+	to := 3 * time.Second
 	proxy.Tr.Dial = func(network, addr string) (c net.Conn, err error) {
 		c, err = (&net.Dialer{
-			Timeout:   3 * time.Second,
-			KeepAlive: 60 * time.Second,
+			Timeout:   to,
+			KeepAlive: to,
 		}).Dial(network, addr)
 		if c, ok := c.(*net.TCPConn); err == nil && ok {
 			log.Println("Set keep alive")
