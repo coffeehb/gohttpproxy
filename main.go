@@ -46,5 +46,5 @@ func main() {
 		return
 	}
 	proxy.Verbose = true
-	log.Fatal(http.ListenAndServe(fmt.Sprintf("%s:%s", host, port), proxy))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf("%s:%d", host, port), proxy))
 }
