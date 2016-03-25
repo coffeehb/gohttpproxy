@@ -4,11 +4,9 @@ import (
 	"fmt"
 	"github.com/elazarl/goproxy"
 	"log"
-	"net"
 	"net/http"
 	"os"
 	"strconv"
-	"time"
 )
 
 func main() {
