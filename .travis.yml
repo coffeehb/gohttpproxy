@@ -2,12 +2,11 @@ language: go
 
 go:
     - 1.5
+    - 1.6
+    - 1.7
 
-install:
-    - export GO15VENDOREXPERIMENT=1
-    - go get github.com/masterminds/glide
 
 script:
-    - glide install
-    - go build -v
-    - ls -l
+    - go get -v ./...
+    - godep restore
+    - godep go build -v

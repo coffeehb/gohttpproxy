@@ -1,3 +1,0 @@
-package: github.com/netroby/gohttpproxy
-import:
-- package: github.com/elazarl/goproxy
