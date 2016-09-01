@@ -1,7 +1,17 @@
 # gohttpproxy
 
-Go http(s) proxy , listen on 127.0.0.1:8123
+Go http(s) proxy , By default listen on 127.0.0.1:8123
 
+## Install
+
+
+```
+go get -u -v github.com/tools/godep
+go get -v ./...
+godep restore
+godep go build
+./gohttpproxy
+```
 ## Donate me please
 
 ### Bitcoin donate
