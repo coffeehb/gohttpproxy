@@ -2,24 +2,21 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"net"
 	"os"
 	"time"
-
-	"github.com/getlantern/golog"
 
 	"github.com/getlantern/http-proxy/commonfilter"
 	"github.com/getlantern/http-proxy/filters"
 	"github.com/getlantern/http-proxy/forward"
 	"github.com/getlantern/http-proxy/httpconnect"
 	"github.com/getlantern/http-proxy/listeners"
-	"github.com/getlantern/http-proxy/logging"
 	"github.com/getlantern/http-proxy/server"
 )
 
 var (
 	testingLocal = false
-	log          = golog.LoggerFor("http-proxy")
 
 	help      = flag.Bool("help", false, "Get usage help")
 	keyfile   = flag.String("key", "", "Private key file name")
@@ -41,10 +38,6 @@ func main() {
 
 	// Logging
 	// TODO: use real parameters
-	err = logging.Init("instanceid", "version", "releasedate", "")
-	if err != nil {
-		log.Error(err)
-	}
 
 	filterChain := filters.Join(
 		commonfilter.New(&commonfilter.Options{
@@ -76,6 +69,6 @@ func main() {
 		err = srv.ListenAndServeHTTP(*addr, nil)
 	}
 	if err != nil {
-		log.Errorf("Error serving: %v", err)
+		fmt.Println("Error serving: %v", err)
 	}
 }
