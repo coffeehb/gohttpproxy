@@ -1,11 +1,13 @@
 language: go
 
 go:
-    - 1.7
+    - 1.8
+    - 1.9
 
 install:
-    - go get -v github.com/tools/godep
+    - go get -u -v github.com/golang/dep/cmd/dep
 
 script:
-    - godep restore
-    - godep go build -v
+    - dep ensure -v
+    - go build -buildmode=pie -v
+    - ls -l
