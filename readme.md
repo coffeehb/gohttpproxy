@@ -1,6 +1,16 @@
 # gohttpproxy
+Update 2017-09-07
+
+now gohttpproxy support upstream proxy, like socks5
+
+```
+browser => gohttpproxy => socks5
+```
 
 Go http(s) proxy , By default listen on 127.0.0.1:8123
+
+
+
 
 ## Install
 
