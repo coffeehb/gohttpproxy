@@ -2,3 +2,4 @@ gohttpproxy
 vendor/
 .idea
 *.iml
+*.lock
