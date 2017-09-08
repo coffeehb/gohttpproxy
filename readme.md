@@ -10,16 +10,24 @@ browser => gohttpproxy => socks5
 Go http(s) proxy , By default listen on 127.0.0.1:8123
 
 
+```
+Usage of ./gohttpproxy:
+  -addr string
+        host:port of the proxy (default ":8080")
+  -forward string
+        forward to upstream proxy, example: socks5://127.0.0.1:1080
+  -v int
+        log level
 
+```
 
 ## Install
 
 
 ```
-go get -u -v github.com/tools/godep
-go get -v ./...
-godep restore
-godep go build
+go get -u -v github.com/golang/dep/cmd/dep
+dep ensure -v
+go build -buildmode=pie -v
 ./gohttpproxy
 ```
 ## Donate me please
