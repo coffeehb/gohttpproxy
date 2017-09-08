@@ -12,9 +12,10 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/google/martian"
-	"golang.org/x/net/proxy"
 	"syscall"
+
+	"github.com/netroby/martian"
+	"golang.org/x/net/proxy"
 )
 
 var (

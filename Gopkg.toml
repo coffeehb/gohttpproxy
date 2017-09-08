@@ -22,5 +22,5 @@
 
 
 [[constraint]]
-  name = "github.com/google/martian"
-  branch = "master"
+  name = "github.com/netroby/martian"
+  branch = "dev"
