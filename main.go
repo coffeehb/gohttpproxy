@@ -3,69 +3,52 @@ package main
 import (
 	"crypto/tls"
 	"flag"
-	"fmt"
-	"log"
+	log "github.com/google/martian/log"
 	"net"
 	"net/http"
-	"net/url"
 	"os"
 	"os/signal"
 	"time"
 
 	"syscall"
 
-	"github.com/netroby/martian"
-	"golang.org/x/net/proxy"
+	"github.com/google/martian"
 )
 
 var (
-	addr    = flag.String("addr", ":8080", "host:port of the proxy")
-	forward = flag.String("forward", "", "forward to upstream proxy, example: socks5://127.0.0.1:1080")
+	addr = flag.String("addr", ":8080", "host:port of the proxy")
+	lv = flag.Int("lv", log.Debug, "default log level")
 )
 
 func main() {
 	p := martian.NewProxy()
 	defer p.Close()
+	//设置默认级别
+	log.SetLevel(*lv)
 
-	fmt.Printf("Now will connect parent proxy: %v \n", *forward)
-	if *forward != "" {
-		url, err := url.Parse(*forward)
-		if err != nil {
-			fmt.Printf("forward url.Parse failed: %v\n", err)
-			os.Exit(-1)
-		}
-		px, err := proxy.FromURL(url, proxy.Direct)
-		tr := &http.Transport{
-			Dial:                  px.Dial,
-			TLSHandshakeTimeout:   10 * time.Second,
-			ExpectContinueTimeout: time.Second,
-			TLSClientConfig: &tls.Config{
-				InsecureSkipVerify: true,
-			},
-		}
-		p.SetRoundTripper(tr)
-	} else {
 
-		tr := &http.Transport{
-			Dial: (&net.Dialer{
-				Timeout:   30 * time.Second,
-				KeepAlive: 30 * time.Second,
-			}).Dial,
-			TLSHandshakeTimeout:   10 * time.Second,
-			ExpectContinueTimeout: time.Second,
-			TLSClientConfig: &tls.Config{
-				InsecureSkipVerify: true,
-			},
-		}
-		p.SetRoundTripper(tr)
+	tr := &http.Transport{
+		IdleConnTimeout: 300 * time.Second,
+		TLSHandshakeTimeout:   10 * time.Second,
+		ExpectContinueTimeout: 2 * time.Second,
+		TLSClientConfig: &tls.Config{
+			InsecureSkipVerify: true,
+		},
 	}
+
+	p.SetDial((&net.Dialer{
+		Timeout:   3 * time.Second,
+		KeepAlive: 300 * time.Second,
+	}).Dial)
+	p.SetRoundTripper(tr)
+
 
 	l, err := net.Listen("tcp", *addr)
 	if err != nil {
-		log.Fatal(err)
+		log.Errorf(err.Error())
 	}
 
-	log.Printf("Starting proxy on : %s", l.Addr().String())
+	log.Infof("Starting proxy on : %s", l.Addr().String())
 
 	go p.Serve(l)
 
@@ -74,7 +57,7 @@ func main() {
 
 	<-sigc
 
-	log.Println("martian: shutting down")
+	log.Infof("Notice: shutting down")
 	os.Exit(0)
 }
 

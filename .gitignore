@@ -2,3 +2,4 @@ gohttpproxy
 .idea
 *.iml
 *.lock
+go.sum

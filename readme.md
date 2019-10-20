@@ -1,10 +1,10 @@
 # gohttpproxy
-Update 2017-09-07
 
-now gohttpproxy support upstream proxy, like socks5
+go http proxy is a simple http proxy, support `HTTP CONNECT ` proxy
+
 
 ```
-browser => gohttpproxy => socks5
+browser => gohttpproxy => target web site
 ```
 
 Go http(s) proxy , By default listen on 127.0.0.1:8123
@@ -14,20 +14,17 @@ Go http(s) proxy , By default listen on 127.0.0.1:8123
 Usage of ./gohttpproxy:
   -addr string
         host:port of the proxy (default ":8080")
-  -forward string
-        forward to upstream proxy, example: socks5://127.0.0.1:1080
-  -v int
-        log level
+  -lv int
+        log level: 1: debug, 2: info, 3: debug
 
 ```
 
 ## Install
 
 
-```
-go get -u -v github.com/golang/dep/cmd/dep
-dep ensure -v
-go build -buildmode=pie -v
+``` 
+CGO_ENABLED=0 go build -v -a -ldflags ' -s -w  -extldflags "-static"' .
+
 ./gohttpproxy
 ```
 ## Donate me please
