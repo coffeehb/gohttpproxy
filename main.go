@@ -3,12 +3,13 @@ package main
 import (
 	"crypto/tls"
 	"flag"
-	log "github.com/google/martian/log"
 	"net"
 	"net/http"
 	"os"
 	"os/signal"
 	"time"
+
+	log "github.com/google/martian/log"
 
 	"syscall"
 
@@ -17,7 +18,7 @@ import (
 
 var (
 	addr = flag.String("addr", ":8080", "host:port of the proxy")
-	lv = flag.Int("lv", log.Debug, "default log level")
+	lv   = flag.Int("lv", log.Debug, "default log level")
 )
 
 func main() {
@@ -26,22 +27,21 @@ func main() {
 	//设置默认级别
 	log.SetLevel(*lv)
 
-
 	tr := &http.Transport{
-		IdleConnTimeout: 300 * time.Second,
-		TLSHandshakeTimeout:   15 * time.Second,
-		ExpectContinueTimeout: 15 * time.Second,
+		IdleConnTimeout:       300 * time.Second,
+		TLSHandshakeTimeout:   3 * time.Second,
+		ExpectContinueTimeout: 3 * time.Second,
+		MaxIdleConns:          128,
+		MaxIdleConnsPerHost:   128,
 		TLSClientConfig: &tls.Config{
 			InsecureSkipVerify: true,
 		},
 	}
 
 	p.SetDial((&net.Dialer{
-		Timeout:   15 * time.Second,
 		KeepAlive: 300 * time.Second,
 	}).Dial)
 	p.SetRoundTripper(tr)
-
 
 	l, err := net.Listen("tcp", *addr)
 	if err != nil {
