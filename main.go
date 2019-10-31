@@ -29,15 +29,15 @@ func main() {
 
 	tr := &http.Transport{
 		IdleConnTimeout: 300 * time.Second,
-		TLSHandshakeTimeout:   10 * time.Second,
-		ExpectContinueTimeout: 2 * time.Second,
+		TLSHandshakeTimeout:   15 * time.Second,
+		ExpectContinueTimeout: 15 * time.Second,
 		TLSClientConfig: &tls.Config{
 			InsecureSkipVerify: true,
 		},
 	}
 
 	p.SetDial((&net.Dialer{
-		Timeout:   3 * time.Second,
+		Timeout:   15 * time.Second,
 		KeepAlive: 300 * time.Second,
 	}).Dial)
 	p.SetRoundTripper(tr)
