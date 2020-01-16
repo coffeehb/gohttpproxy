@@ -9,11 +9,11 @@ import (
 	"os/signal"
 	"time"
 
-	log "github.com/google/martian/log"
+	"github.com/google/martian/v3/log"
 
 	"syscall"
 
-	"github.com/google/martian"
+	"github.com/google/martian/v3"
 )
 
 var (
@@ -29,10 +29,12 @@ func main() {
 
 	tr := &http.Transport{
 		IdleConnTimeout:       300 * time.Second,
-		TLSHandshakeTimeout:   3 * time.Second,
-		ExpectContinueTimeout: 3 * time.Second,
-		MaxIdleConns:          128,
-		MaxIdleConnsPerHost:   128,
+		ResponseHeaderTimeout: 4 * time.Second,
+		TLSHandshakeTimeout:   4 * time.Second,
+		ExpectContinueTimeout: 4 * time.Second,
+		MaxIdleConns:          32,
+		MaxIdleConnsPerHost:   32,
+		MaxConnsPerHost: 512,
 		TLSClientConfig: &tls.Config{
 			InsecureSkipVerify: true,
 		},
@@ -52,10 +54,10 @@ func main() {
 
 	go p.Serve(l)
 
-	sigc := make(chan os.Signal, 2)
-	signal.Notify(sigc, os.Interrupt, os.Kill, syscall.SIGTERM)
+	signChannel := make(chan os.Signal, 2)
+	signal.Notify(signChannel, os.Interrupt, os.Kill, syscall.SIGTERM)
 
-	<-sigc
+	<-signChannel
 
 	log.Infof("Notice: shutting down")
 	os.Exit(0)
