@@ -17,7 +17,7 @@ import (
 )
 
 var (
-	addr = flag.String("addr", ":8080", "host:port of the proxy")
+	addr = flag.String("addr", "127.0.0.1:8080", "host:port of the proxy")
 	lv   = flag.Int("lv", log.Debug, "default log level")
 )
 
