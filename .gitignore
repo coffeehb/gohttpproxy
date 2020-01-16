@@ -3,3 +3,4 @@ gohttpproxy
 *.iml
 *.lock
 go.sum
+*.exe
