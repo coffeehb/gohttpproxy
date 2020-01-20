@@ -3,17 +3,15 @@ package main
 import (
 	"crypto/tls"
 	"flag"
+	"github.com/google/martian/v3"
+	"github.com/google/martian/v3/log"
 	"net"
 	"net/http"
+	_ "net/http/pprof"
 	"os"
 	"os/signal"
-	"time"
-
-	"github.com/google/martian/v3/log"
-
 	"syscall"
-
-	"github.com/google/martian/v3"
+	"time"
 )
 
 var (
@@ -22,6 +20,9 @@ var (
 )
 
 func main() {
+	go func() {
+		_ = http.ListenAndServe("localhost:6060", nil)
+	}()
 	p := martian.NewProxy()
 	defer p.Close()
 	//设置默认级别
