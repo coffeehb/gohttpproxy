@@ -17,9 +17,16 @@ import (
 var (
 	addr = flag.String("addr", "127.0.0.1:8080", "host:port of the proxy")
 	lv   = flag.Int("lv", log.Debug, "default log level")
+	h = flag.Bool("h", false, "help")
 )
 
 func main() {
+	flag.Parse()
+	if *h {
+		flag.PrintDefaults()
+		os.Exit(0)
+	}
+
 	go func() {
 		_ = http.ListenAndServe("localhost:6060", nil)
 	}()
