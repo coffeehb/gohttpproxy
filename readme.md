@@ -24,6 +24,8 @@ Usage of ./gohttpproxy:
 
 ``` 
 CGO_ENABLED=0 go build -v -a -ldflags ' -s -w  -extldflags "-static"' .
+# go1.14rc1
+CGO_ENABLED=0 go1.14rc1 build -v -a -ldflags ' -s -w  -extldflags "-static"' .
 
 ./gohttpproxy
 ```
