@@ -17,7 +17,7 @@ import (
 var (
 	addr = flag.String("addr", "127.0.0.1:8080", "host:port of the proxy")
 	lv   = flag.Int("lv", log.Debug, "default log level")
-	h = flag.Bool("h", false, "help")
+	h    = flag.Bool("h", false, "help")
 )
 
 func main() {
@@ -31,6 +31,8 @@ func main() {
 		_ = http.ListenAndServe("localhost:6060", nil)
 	}()
 	p := martian.NewProxy()
+	//设置读写超时为600分钟，也就是10小时
+	p.SetTimeout(600 * time.Minute)
 	defer p.Close()
 	//设置默认级别
 	log.SetLevel(*lv)
@@ -42,7 +44,7 @@ func main() {
 		ExpectContinueTimeout: 0,
 		MaxIdleConns:          32,
 		MaxIdleConnsPerHost:   3,
-		MaxConnsPerHost: 512,
+		MaxConnsPerHost:       512,
 		TLSClientConfig: &tls.Config{
 			InsecureSkipVerify: true,
 		},
@@ -50,7 +52,7 @@ func main() {
 
 	p.SetDial((&net.Dialer{
 		KeepAlive: 75 * time.Second,
-		Timeout: 3 * time.Second,
+		Timeout:   3 * time.Second,
 	}).Dial)
 	p.SetRoundTripper(tr)
 
