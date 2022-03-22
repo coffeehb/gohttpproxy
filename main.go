@@ -38,14 +38,14 @@ func main() {
 	log.SetLevel(*lv)
 
 	tr := &http.Transport{
-		IdleConnTimeout:       60 * time.Second,
-		ResponseHeaderTimeout: 3 * time.Second,
-		TLSHandshakeTimeout:   3 * time.Second,
-		ExpectContinueTimeout: 0,
+		IdleConnTimeout:       75 * time.Second,
+		ResponseHeaderTimeout: 5 * time.Second,
+		TLSHandshakeTimeout:   5 * time.Second,
+		ExpectContinueTimeout: 5 * time.Second,
 		DisableKeepAlives: true,
 		MaxIdleConns:          -1,
 		MaxIdleConnsPerHost:   -1,
-		MaxConnsPerHost:       512,
+		MaxConnsPerHost:       4096,
 		TLSClientConfig: &tls.Config{
 			InsecureSkipVerify: true,
 		},
@@ -53,7 +53,7 @@ func main() {
 
 	p.SetDial((&net.Dialer{
 		KeepAlive: 75 * time.Second,
-		Timeout:   3 * time.Second,
+		Timeout:   5 * time.Second,
 	}).Dial)
 	p.SetRoundTripper(tr)
 
