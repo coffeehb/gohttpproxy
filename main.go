@@ -3,7 +3,6 @@ package main
 import (
 	"crypto/tls"
 	"flag"
-	"github.com/google/martian/v3"
 	"github.com/google/martian/v3/log"
 	"net"
 	"net/http"
@@ -42,9 +41,9 @@ func main() {
 		ResponseHeaderTimeout: 5 * time.Second,
 		TLSHandshakeTimeout:   5 * time.Second,
 		ExpectContinueTimeout: 5 * time.Second,
-		DisableKeepAlives: true,
-		MaxIdleConns:          480,
-		MaxIdleConnsPerHost:   16,
+		DisableKeepAlives:     true,
+		MaxIdleConns:          0,
+		MaxIdleConnsPerHost:   0,
 		MaxConnsPerHost:       4096,
 		TLSClientConfig: &tls.Config{
 			InsecureSkipVerify: true,
@@ -52,7 +51,7 @@ func main() {
 	}
 
 	p.SetDial((&net.Dialer{
-		KeepAlive: 75 * time.Second,
+		KeepAlive: -1,
 		Timeout:   5 * time.Second,
 	}).Dial)
 	p.SetRoundTripper(tr)
