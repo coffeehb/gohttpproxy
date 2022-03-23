@@ -5,6 +5,8 @@ import (
 	"flag"
 	"github.com/google/martian/v3"
 	"github.com/google/martian/v3/log"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 	"net"
 	"net/http"
 	_ "net/http/pprof"
@@ -21,6 +23,22 @@ var (
 )
 
 func main() {
+	atom := zap.NewAtomicLevel()
+
+	// To keep the example deterministic, disable timestamps in the output.
+	encoderCfg := zap.NewProductionEncoderConfig()
+	encoderCfg.EncodeTime = zapcore.ISO8601TimeEncoder
+
+	logger := zap.New(zapcore.NewCore(
+		zapcore.NewConsoleEncoder(encoderCfg),
+		zapcore.Lock(os.Stdout),
+		atom,
+	))
+	defer logger.Sync()
+
+	atom.SetLevel(zap.DebugLevel)
+
+	sugar := logger.Sugar()
 	flag.Parse()
 	if *h {
 		flag.PrintDefaults()
@@ -29,6 +47,10 @@ func main() {
 
 	//设置默认级别
 	log.SetLevel(*lv)
+	//使用sugar为log
+	log.SetLogger(sugar)
+
+	log.Infof(" log level %v", *lv)
 
 	p := martian.NewProxy()
 	//设置读写超时为600分钟，也就是10小时
