@@ -3,7 +3,7 @@ package main
 import (
 	"crypto/tls"
 	"flag"
-	"github.com/google/martian"
+	"github.com/google/martian/v3"
 	"github.com/google/martian/v3/log"
 	"net"
 	"net/http"
@@ -27,15 +27,13 @@ func main() {
 		os.Exit(0)
 	}
 
-	go func() {
-		_ = http.ListenAndServe("localhost:6060", nil)
-	}()
+	//设置默认级别
+	log.SetLevel(*lv)
+
 	p := martian.NewProxy()
 	//设置读写超时为600分钟，也就是10小时
 	p.SetTimeout(600 * time.Minute)
 	defer p.Close()
-	//设置默认级别
-	log.SetLevel(*lv)
 
 	tr := &http.Transport{
 		IdleConnTimeout:       75 * time.Second,
@@ -73,8 +71,4 @@ func main() {
 
 	log.Infof("Notice: shutting down")
 	os.Exit(0)
-}
-
-func init() {
-	martian.Init()
 }
