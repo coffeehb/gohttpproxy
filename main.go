@@ -59,9 +59,9 @@ func main() {
 
 	tr := &http.Transport{
 		IdleConnTimeout:       75 * time.Second,
-		ResponseHeaderTimeout: 5 * time.Second,
-		TLSHandshakeTimeout:   5 * time.Second,
-		ExpectContinueTimeout: 5 * time.Second,
+		ResponseHeaderTimeout: 0,
+		TLSHandshakeTimeout:   0,
+		ExpectContinueTimeout: 0,
 		DisableKeepAlives:     true,
 		MaxIdleConns:          0,
 		MaxIdleConnsPerHost:   0,
