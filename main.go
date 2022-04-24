@@ -58,7 +58,7 @@ func main() {
 	defer p.Close()
 
 	tr := &http.Transport{
-		IdleConnTimeout:       75 * time.Second,
+		IdleConnTimeout:       1 * time.Second,
 		ResponseHeaderTimeout: 0,
 		TLSHandshakeTimeout:   0,
 		ExpectContinueTimeout: 0,
