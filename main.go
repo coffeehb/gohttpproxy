@@ -58,13 +58,13 @@ func main() {
 	defer p.Close()
 
 	tr := &http.Transport{
-		IdleConnTimeout:       1 * time.Second,
+		IdleConnTimeout:       6 * time.Second,
 		ResponseHeaderTimeout: 0,
 		TLSHandshakeTimeout:   0,
 		ExpectContinueTimeout: 0,
-		DisableKeepAlives:     true,
-		MaxIdleConns:          0,
-		MaxIdleConnsPerHost:   0,
+		DisableKeepAlives:     false,
+		MaxIdleConns:          1024,
+		MaxIdleConnsPerHost:   64,
 		MaxConnsPerHost:       4096,
 		TLSClientConfig: &tls.Config{
 			InsecureSkipVerify: true,
@@ -72,7 +72,7 @@ func main() {
 	}
 
 	p.SetDial((&net.Dialer{
-		KeepAlive: -1,
+		KeepAlive: 6 * time.Second,
 		Timeout:   5 * time.Second,
 	}).Dial)
 	p.SetRoundTripper(tr)
