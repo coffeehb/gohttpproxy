@@ -53,15 +53,15 @@ func main() {
 	log.Infof(" log level %v", *lv)
 
 	p := martian.NewProxy()
-	//设置读写超时为600分钟，也就是10小时
-	p.SetTimeout(600 * time.Minute)
+	//设置读写超时为30分钟，也就是10小时
+	p.SetTimeout(6 * time.Minute)
 	defer p.Close()
 
 	tr := &http.Transport{
 		IdleConnTimeout:       6 * time.Second,
-		ResponseHeaderTimeout: 0,
-		TLSHandshakeTimeout:   0,
-		ExpectContinueTimeout: 0,
+		ResponseHeaderTimeout: 6 * time.Second,
+		TLSHandshakeTimeout:   6 * time.Second,
+		ExpectContinueTimeout: 6 * time.Second,
 		DisableKeepAlives:     false,
 		MaxIdleConns:          6,
 		MaxIdleConnsPerHost:   6,
