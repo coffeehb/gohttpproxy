@@ -3,8 +3,8 @@ package main
 import (
 	"crypto/tls"
 	"flag"
-	"github.com/google/martian/v3"
-	"github.com/google/martian/v3/log"
+	"github.com/cnmade/martian/v3"
+	"github.com/cnmade/martian/v3/log"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"net"
@@ -54,7 +54,8 @@ func main() {
 
 	p := martian.NewProxy()
 	//设置读写超时为30分钟，也就是10小时
-	p.SetTimeout(6 * time.Second)
+	//	p.SetTimeout(6 * time.Second)
+	martian.ProxyIdleTimeout = 2 * time.Minute
 	defer p.Close()
 
 	tr := &http.Transport{
