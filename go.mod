@@ -3,7 +3,7 @@ module github.com/netroby/gohttpproxy
 go 1.18
 
 require (
-	github.com/cnmade/martian/v3 v3.3.4
+	github.com/cnmade/martian/v3 v3.3.5
 	go.uber.org/zap v1.21.0
 )
 
