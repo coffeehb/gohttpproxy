@@ -3,3 +3,5 @@ gohttpproxy
 *.iml
 *.lock
 *.exe
+
+dist/
